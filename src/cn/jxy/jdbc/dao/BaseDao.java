@@ -3,6 +3,7 @@ package cn.jxy.jdbc.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,9 +13,9 @@ import cn.jxy.jdbc.uitls.JdbcUtil;
 // 公共的dao访问父类,所有dao子类都需要继承
 public abstract class BaseDao<T> {
 	
-	protected abstract T getRow(ResultSet rs);
+	protected abstract T getRow(ResultSet rs) throws Exception;
 	
-	public List<T> queryByName(String sql,Object... param) {
+	protected List<T> query(String sql,Object... param) {
 		List<T> proList = new ArrayList<T>();
 		Connection conn = null;
 		PreparedStatement prep = null;
@@ -28,7 +29,8 @@ public abstract class BaseDao<T> {
 			}
 			rs = prep.executeQuery();
 			while (rs.next()) {
-				
+				System.out.println(this);
+				proList.add(this.getRow(rs));
 			}
 			return proList;
 		} catch (Exception e) {
@@ -39,7 +41,7 @@ public abstract class BaseDao<T> {
 	}
 	
 	// insert delete update
-	public int execute(String sql,Object... param) {
+	protected int execute(String sql,Object... param) {
 		System.out.println("abc");
 		Connection conn = null; 
 		PreparedStatement prep = null;
