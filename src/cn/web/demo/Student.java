@@ -9,8 +9,10 @@ public class Student {
 	// 静态属于只属于类
 	private static String address;
 	
-	
-	
+	@Override
+	public String toString() {
+		return "Student [age=" + age + ", name=" + name + "]";
+	}
 	public static String getAddress() {
 		return address;
 	}
@@ -18,6 +20,9 @@ public class Student {
 		Student.address = address;
 	}
 	
+	private void abc() {
+		
+	}
 	
 	public Integer getAge() {
 		System.out.println(this);

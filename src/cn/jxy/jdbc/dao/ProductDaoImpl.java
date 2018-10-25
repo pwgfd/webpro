@@ -12,6 +12,7 @@ import javax.xml.transform.sax.SAXSource;
 
 import cn.jxy.jdbc.model.Product;
 import cn.jxy.jdbc.uitls.JdbcUtil;
+import cn.web.demo.Student;
 
 public class ProductDaoImpl extends BaseDao<Product> {
 	
