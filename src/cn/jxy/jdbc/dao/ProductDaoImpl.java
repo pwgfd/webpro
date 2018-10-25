@@ -1,64 +1,53 @@
 package cn.jxy.jdbc.dao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.crypto.dsig.SignatureProperties;
-import javax.xml.transform.sax.SAXSource;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 import cn.jxy.jdbc.model.Product;
-import cn.jxy.jdbc.uitls.JdbcUtil;
-import cn.web.demo.Student;
 
-public class ProductDaoImpl extends BaseDao<Product> {
+public class ProductDaoImpl{
+	
+	private JdbcTemplate jdbcTemplate;
+	
+	public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
+		this.jdbcTemplate = jdbcTemplate;
+	}
 	
 	public static void main(String[] args) {
-		ProductDaoImpl productDao = new ProductDaoImpl();
-		System.out.println(productDao.queryByName(""));
-		System.out.println(productDao.getById(2));
+		ApplicationContext context = new ClassPathXmlApplicationContext("spring-bean.xml");
+		ProductDaoImpl proDao = context.getBean("productDao",ProductDaoImpl.class);
+		System.out.println(proDao.getById(2));
 	}
-
-//	@Override
-//	protected Product getRow(ResultSet rs) throws SQLException {
-//		// 获取当前记录的数据
-//		Product product = new Product();
-//		product.setDate(rs.getDate("date"));
-//		product.setId(rs.getInt("id"));
-//		product.setName(rs.getString("name"));
-//		product.setRemark(rs.getString("remark"));
-//		product.setPrice(rs.getDouble("price"));
-//		return product;
-//	}
 
 	public List<Product> queryByName(String name) {
 		String sql = "select * from product where name like ?";
-		return super.query(Product.class,sql, "%" + name + "%");
+		return jdbcTemplate.query(sql,new BeanPropertyRowMapper<Product>(Product.class),new Object[] {"%" + name + "%"});
+		
 	}
 
 	public Product getById(int id) {
 		String sql = "select * from product where id = ?";
-		List<Product> proList = super.query(Product.class,sql, id);
+		List<Product> proList = jdbcTemplate.query(sql,new BeanPropertyRowMapper<Product>(Product.class),id);
 		return proList.size() > 0 ? proList.get(0) : null;
 	}
 
 	public int update(Product product) {
 		String sql = "update product set name=?,price=?,remark=? where id = ?";
-		return super.execute(sql,
-				new Object[] { product.getName(), product.getPrice(), product.getRemark(), product.getId() });
+		return jdbcTemplate.update(sql, new Object[] { product.getName(), product.getPrice(), product.getRemark(), product.getId() });
 	}
 
 	public int delete(int id) {
 		String sql = "delete from product where id = ?";
-		return super.execute(sql, id);
+		return jdbcTemplate.update(sql, id);
 	}
 
 	public int save(Product product) {
 		String sql = "insert into product (name,price,remark) values (?,?,?);";
-		return super.execute(sql, new Object[] { product.getName(), product.getPrice(), product.getRemark() });
+		return jdbcTemplate.update(sql, new Object[] { product.getName(), product.getPrice(), product.getRemark() });
 	}
 
 }
