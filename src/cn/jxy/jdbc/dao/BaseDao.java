@@ -1,8 +1,10 @@
 package cn.jxy.jdbc.dao;
 
+import java.lang.reflect.Field;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,11 +13,9 @@ import cn.jxy.jdbc.model.Product;
 import cn.jxy.jdbc.uitls.JdbcUtil;
 
 // 公共的dao访问父类,所有dao子类都需要继承
-public abstract class BaseDao<T> {
+public class BaseDao<T> {
 	
-	protected abstract T getRow(ResultSet rs) throws Exception;
-	
-	protected List<T> query(String sql,Object... param) {
+	protected List<T> query(Class<T> clazz,String sql,Object... param) {
 		List<T> proList = new ArrayList<T>();
 		Connection conn = null;
 		PreparedStatement prep = null;
@@ -28,9 +28,22 @@ public abstract class BaseDao<T> {
 				prep.setObject(i+1, param[i]);
 			}
 			rs = prep.executeQuery();
+			// 首先获取列的信息
+			ResultSetMetaData metaData = rs.getMetaData();
+			// 游标向下移动一行
 			while (rs.next()) {
-				System.out.println(this);
-				proList.add(this.getRow(rs));
+				T model = clazz.newInstance();
+				// 此处要循环获取所有列名称
+				for(int index=1;index<=metaData.getColumnCount();index++) {
+					// 通过列的索引(从1开始)获取列的名称,
+					String colName = metaData.getColumnName(index);
+					System.out.println("colName:" + colName);
+					// 通过列名获取相应的类的字段名称
+					Field field = clazz.getDeclaredField(colName);
+					field.setAccessible(true);
+					field.set(model, rs.getObject(colName));
+				}
+				proList.add(model);
 			}
 			return proList;
 		} catch (Exception e) {

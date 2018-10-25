@@ -1,5 +1,6 @@
 package cn.jxy.jdbc.model;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class Product {
@@ -10,7 +11,7 @@ public class Product {
 	
 	private String remark;
 	
-	private Double price;
+	private BigDecimal price;
 	
 	private Date date;
 
@@ -24,7 +25,7 @@ public class Product {
 		super();
 	}
 
-	public Product(Integer id, String name, String remark, Double price) {
+	public Product(Integer id, String name, String remark, BigDecimal price) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -56,11 +57,11 @@ public class Product {
 		this.remark = remark;
 	}
 
-	public Double getPrice() {
+	public BigDecimal getPrice() {
 		return price;
 	}
 
-	public void setPrice(Double price) {
+	public void setPrice(BigDecimal price) {
 		this.price = price;
 	}
 

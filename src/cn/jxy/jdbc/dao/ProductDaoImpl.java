@@ -19,28 +19,29 @@ public class ProductDaoImpl extends BaseDao<Product> {
 	public static void main(String[] args) {
 		ProductDaoImpl productDao = new ProductDaoImpl();
 		System.out.println(productDao.queryByName(""));
+		System.out.println(productDao.getById(2));
 	}
 
-	@Override
-	protected Product getRow(ResultSet rs) throws SQLException {
-		// 获取当前记录的数据
-		Product product = new Product();
-		product.setDate(rs.getDate("date"));
-		product.setId(rs.getInt("id"));
-		product.setName(rs.getString("name"));
-		product.setRemark(rs.getString("remark"));
-		product.setPrice(rs.getDouble("price"));
-		return product;
-	}
+//	@Override
+//	protected Product getRow(ResultSet rs) throws SQLException {
+//		// 获取当前记录的数据
+//		Product product = new Product();
+//		product.setDate(rs.getDate("date"));
+//		product.setId(rs.getInt("id"));
+//		product.setName(rs.getString("name"));
+//		product.setRemark(rs.getString("remark"));
+//		product.setPrice(rs.getDouble("price"));
+//		return product;
+//	}
 
 	public List<Product> queryByName(String name) {
 		String sql = "select * from product where name like ?";
-		return super.query(sql, "%" + name + "%");
+		return super.query(Product.class,sql, "%" + name + "%");
 	}
 
 	public Product getById(int id) {
 		String sql = "select * from product where id = ?";
-		List<Product> proList = super.query(sql, id);
+		List<Product> proList = super.query(Product.class,sql, id);
 		return proList.size() > 0 ? proList.get(0) : null;
 	}
 
