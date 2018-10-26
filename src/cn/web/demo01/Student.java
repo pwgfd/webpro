@@ -1,7 +1,23 @@
 package cn.web.demo01;
 
+import java.lang.reflect.Constructor;
 
 public class Student {
+	
+	public Student() {
+		
+	}
+	
+	public Student(int num) {
+		System.out.println("num:" + num);
+		
+	}
+	
+	public static void main(String[] args) throws Exception {
+		Constructor<Student> constructor = Student.class.getConstructor(int.class);
+		Student newInstance = constructor.newInstance(123);
+		System.out.println(newInstance);
+	}
 	
 	private Integer age;
 	

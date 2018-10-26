@@ -4,12 +4,6 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.Arrays;
-import java.util.Date;
-
-import org.eclipse.jdt.internal.compiler.ast.ThisReference;
-
-import com.sun.org.apache.bcel.internal.generic.NEW;
-import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
 
 class MyInvocationHandler implements InvocationHandler{
 	
