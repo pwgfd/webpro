@@ -1,4 +1,4 @@
-package cn.web.demo;
+package cn.web.demo01;
 
 
 public class Student {
