@@ -33,5 +33,27 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 		<aop:pointcut expression="execution(* cn.jxy.jdbc.service.*.*(..))" id="pointcut"/>
 		<aop:advisor advice-ref="advice" pointcut-ref="pointcut"/>
     </aop:config>
+    
+    <!-- 上面的声明式事务是模板风格 -->
+    <bean id="aop" class="cn.jxy.jdbc.utils.LogImpl" />
+    <aop:config>
+    	<!-- 配置切面(用来存储通知(在运行时动态切入方法)的类) -->
+    	<aop:aspect ref="aop">
+    		<!-- 配置通知，和切入的表达式   after:后置通知，无论是否有异常都会切入, 此通知用来释放资源
+    		<aop:after method="show" pointcut="execution(* cn.jxy.jdbc.service.*.*(..))"/>
+    		-->
+    		<!-- 后置返回通知,有正常结束，才会切入 -->
+    		<aop:after-returning method="show" pointcut="execution(* cn.jxy.jdbc.service.*.*(..))" />
+    	</aop:aspect>
+    </aop:config>
 	
 </beans>
+
+
+
+
+
+
+
+
+

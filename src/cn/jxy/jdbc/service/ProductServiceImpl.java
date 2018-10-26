@@ -15,7 +15,7 @@ public class ProductServiceImpl implements ProductService {
 		ProductService proService = context.getBean("productService", ProductService.class);
 		Product product = new Product();
 		product.setName("小米3");
-		proService.save(product);
+		proService.delete(2);
 	}
 
 	private ProductDaoImpl productDao;
@@ -79,6 +79,7 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public int save(Product product) {
 		int count = productDao.save(product);
+		System.out.println("save...............");
 		// Integer.parseInt("xxxxx");
 		return count;
 	}
