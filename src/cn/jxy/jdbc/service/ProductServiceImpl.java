@@ -11,6 +11,14 @@ import cn.jxy.jdbc.model.Product;
 
 public class ProductServiceImpl implements ProductService {
 
+	@Override
+	public int save(Product product) {
+		int count = productDao.save(product);
+		System.out.println("save...............");
+		Integer.parseInt("xxxxx");
+		return count;
+	}
+
 	public static void main(String[] args) {
 		ApplicationContext context = new ClassPathXmlApplicationContext("spring-*.xml");
 		ProductService proService = context.getBean("productService", ProductService.class);
@@ -78,12 +86,5 @@ public class ProductServiceImpl implements ProductService {
 	 * 
 	 * @see cn.jxy.jdbc.service.ProductService#save(cn.jxy.jdbc.model.Product)
 	 */
-	@Override
-	public int save(Product product) {
-		int count = productDao.save(product);
-		System.out.println("save...............");
-		// Integer.parseInt("xxxxx");
-		return count;
-	}
 
 }

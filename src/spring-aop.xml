@@ -48,8 +48,9 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
     		-->
     		<!-- 配置通知，和切入的表达式   after:后置通知，无论是否有异常都会切入, 此通知用来释放资源
     		<aop:after method="show" pointcut="execution(* cn.jxy.jdbc.service.*.*(..))"/>
-    		<aop:after-throwing method="exception" throwing="ex" pointcut-ref="pt"/>
     		-->
+    		<aop:after-throwing method="showExe" throwing="ex" pointcut-ref="pt"/>
+    		
     	</aop:aspect>
     </aop:config>
 	

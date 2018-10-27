@@ -17,7 +17,10 @@ public class LogImpl {
 	}
 
 	// 捕获异常信息(在异常的时候才会切入),ex必须xml中指定
-	public void exception(JoinPoint joinPoint, Exception ex) {
+	public void showExe(JoinPoint joinPoint, Exception ex) {
+		System.out.println("被代理对象:" + joinPoint.getTarget());
+		System.out.println("连接点的参数:" + Arrays.toString(joinPoint.getArgs()));
+		System.out.println("连接点方法原型" + joinPoint.getSignature());
 		System.out.println("ex:" + ex);
 	}
 
