@@ -1,5 +1,6 @@
 package cn.jxy.jdbc.service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.context.ApplicationContext;
@@ -14,8 +15,9 @@ public class ProductServiceImpl implements ProductService {
 		ApplicationContext context = new ClassPathXmlApplicationContext("spring-*.xml");
 		ProductService proService = context.getBean("productService", ProductService.class);
 		Product product = new Product();
-		product.setName("小米3");
-		proService.delete(2);
+		product.setName("小米101");
+		product.setPrice(new BigDecimal(3.14));
+		proService.save(product);
 	}
 
 	private ProductDaoImpl productDao;
