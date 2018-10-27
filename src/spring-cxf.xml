@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:lang="http://www.springframework.org/schema/lang"
+       xmlns:jaxws="http://cxf.apache.org/jaxws"
+       xsi:schemaLocation="
+http://www.springframework.org/schema/beans 
+http://www.springframework.org/schema/beans/spring-beans-3.2.xsd 
+http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd
+">
+
+	<!-- 完成cxf与spring整合(把创建ws服务类交给spring管理) 
+	       1: cn.web.demo07 了解了JaxWsServerFactoryBean基本语法,与日志配置
+	       2: 创建一个spring-cxf.xml文件,并且从cxf.jar包中查找 jaxws.xsd
+	       3: 把服务交给spring管理(支持注解)
+	           <bean id="ws" class="cn.web.demo06.MyWebService" />
+	       4: 告知jaxws上面的bean就是ws服务类,并且配置address属性(address="/cxf")
+	           <jaxws:serviceBean>
+					<ref bean="ws"/>
+				</jaxws:serviceBean>
+		   5: spring的配置文件在项目启动时候加载：
+		   
+		       <context-param>
+			  		<param-name>contextConfigLocation</param-name>
+			  		<param-value>classpath:spring-*.xml</param-value>
+			  </context-param>
+			  <listener>
+			  	<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+			  </listener>	
+		   6： cxfservlet来配置访问服务路径
+		   
+		       <servlet>
+			  	<servlet-name>CXF</servlet-name>
+			  	<servlet-class>org.apache.cxf.transport.servlet.CXFServlet</servlet-class>
+			  	<load-on-startup>1</load-on-startup>
+			  </servlet>
+			  
+			  <servlet-mapping>
+			  	<servlet-name>CXF</servlet-name>
+			  	<url-pattern>/ws/*</url-pattern>
+			  </servlet-mapping>	
+	-->
+
+	<bean id="ws" class="cn.web.demo06.MyWebService" />
+	
+	<!-- 前缀是配置在web.xml中    http://localhost:8080/工程名/ws/cxf?wsdl-->
+	<jaxws:server address="/cxf">
+		<jaxws:serviceBean>
+		    <!-- 指定要发布的ws服务类 -->
+			<ref bean="ws"/>
+		</jaxws:serviceBean>
+		<!-- 配置系统提供的拦截器 -->
+		<jaxws:inInterceptors>
+			<bean class="org.apache.cxf.interceptor.LoggingInInterceptor" />
+		</jaxws:inInterceptors>
+		<jaxws:outInterceptors>
+			<bean class="org.apache.cxf.interceptor.LoggingOutInterceptor" />
+		</jaxws:outInterceptors>
+	</jaxws:server>
+  
+</beans>
+
+
+
+
+
+
+
+
+

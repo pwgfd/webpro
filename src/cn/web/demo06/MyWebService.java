@@ -15,6 +15,7 @@ public class MyWebService {
 
 	@WebMethod(operationName = "sayHi1")
 	public @WebResult(name = "result") String sayHi(@WebParam(name = "name") String name) {
+		System.out.println("sayHi()..........");
 		return "hi " + name;
 	}
 
